@@ -1,40 +1,35 @@
-# 🗃️ Notion + Google Drive Folder Automation (Deno Deploy, Auto Refresh)
+# 📊 Notion Campaign Sync
 
-## 🔥 Features
+Automates syncing of Facebook campaign and adset data from Google Sheets into Notion databases, maintaining relationships and avoiding duplicates.
 
-- Auto-generates Google Drive folder named after Notion page
-- Stores link in the `Master Folder` property
-- Automatically fetches a new access token using service account JSON
+## 🧩 Structure
 
----
+- **sync/**: Core sync logic for campaigns and adsets
+- **utils/**: Helpers for Notion, Google Sheets, and environment config
+- **google_auth.ts**: Auth setup for Google Sheets
+- **sync_handler.ts**: Webhook handler that ties everything together
 
-## ✅ Environment Variables for Deno Deploy
+## ⚙️ Environment Variables
 
-| Name                       | Description                             |
-|----------------------------|-----------------------------------------|
-| `NOTION_TOKEN`             | Notion integration secret               |
-| `GOOGLE_ROOT_FOLDER_ID`    | Drive folder ID to nest project folders |
-| `GOOGLE_SERVICE_ACCOUNT_JSON` | Full JSON (stringified) from GCP     |
-| `DEBUG`                    | `true` to enable logs                   |
+Set these in Deno Deploy or `.env`:
 
-To use `GOOGLE_SERVICE_ACCOUNT_JSON`, copy the contents of your `.json` file into an env var.
+### Notion
+- `NOTION_API_KEY`
+- `NOTION_CAMPAIGNS_DB_ID`
+- `NOTION_ADSETS_DB_ID`
 
----
+### Google Sheets
+- `GOOGLE_SERVICE_ACCOUNT_JSON` — stringified JSON with `\n`-escaped private key
+- `GOOGLE_SHEET_ID`
 
-## 📦 Webhook Payload
+## 📝 Sheets Used
 
-```json
-{
-  "data": {
-    "id": "<notion-page-id>"
-  }
-}
-```
+- `ad-account/insights/unique campaigns`
+- `ad-account/insights/unique adsets` (must include `campaign_name` column)
 
----
+## 🚀 Deploy Instructions
 
-## ⏱️ No Manual Token Refresh Needed
+1. Deploy `sync_handler.ts` as your entry point in Deno Deploy
+2. Add environment variables listed above
+3. Trigger your webhook every 3 days to ingest and relate new campaign/adset data
 
-The system signs a JWT and fetches a fresh token on every call — forever.
-
----
