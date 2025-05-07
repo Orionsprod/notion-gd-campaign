@@ -97,3 +97,15 @@ export async function getAccessTokenFromServiceAccount(): Promise<string> {
     throw err;
   }
 }
+
+import { GoogleSpreadsheet } from "https://esm.sh/google-spreadsheet@3.3.0";
+import { config } from "./utils/config.ts"; // or directly use Deno.env.get()
+
+export async function getGoogleSheet(): Promise<GoogleSpreadsheet> {
+  const creds = JSON.parse(Deno.env.get("GOOGLE_SERVICE_ACCOUNT_JSON")!);
+  const sheetId = Deno.env.get("GOOGLE_SHEET_ID")!;
+  const doc = new GoogleSpreadsheet(sheetId);
+  await doc.useServiceAccountAuth(creds);
+  await doc.loadInfo();
+  return doc;
+}
