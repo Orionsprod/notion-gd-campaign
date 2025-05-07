@@ -1,6 +1,12 @@
 {
-  "imports": {},
+  "imports": {
+    "notion_sdk/": "https://deno.land/x/notion_sdk@0.4.7/"
+  },
   "tasks": {
-    "start": "deno run --allow-env --allow-net sync_handler.ts"
+    "start": "deno run --allow-net --allow-env sync_handler.ts"
+  },
+  "compilerOptions": {
+    "lib": ["dom", "esnext"],
+    "strict": true
   }
 }
