@@ -1,4 +1,4 @@
-import { SERVICE_ACCOUNT_JSON, DEBUG } from "./config.ts";
+import { GOOGLE_SERVICE_ACCOUNT_JSON, DEBUG } from "./config.ts";
 
 function decodePEM(pem: string): ArrayBuffer {
   const lines = pem
